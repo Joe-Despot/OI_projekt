@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.oi_projekt">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
@@ -10,17 +9,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OI_Projekt">
         <activity
-            android:name=".ResultsActivity"
+            android:name=".activities.NumbersGameActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activities.ResultsActivity"
             android:exported="false" />
         <activity
-            android:name=".GameChooserActivity"
+            android:name=".activities.SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.GameChooserActivity"
             android:exported="false"
             android:theme="@style/Theme.OI_Projekt" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.LoginSignupPageActivity"
             android:exported="true"
             android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
