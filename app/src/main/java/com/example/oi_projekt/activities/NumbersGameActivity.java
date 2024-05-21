@@ -22,10 +22,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -48,9 +51,7 @@ public class NumbersGameActivity extends AppCompatActivity {
     private TextView timer_text;
     private TextView rounds_text;
     private TextView game_finished_text;
-
-    private int rounds = 0;
-
+    private Integer rounds = 0;
     List<String> items;
 
 
@@ -90,12 +91,12 @@ public class NumbersGameActivity extends AppCompatActivity {
                     items_done.add(first_num+second_num);
                 }
                 if(items_done.equals(items_map)){
-                    if(rounds == 10){
+                    if(rounds == 7){
                         Done();
                     }
                     Toast.makeText(NumbersGameActivity.this, "Well Done!", Toast.LENGTH_SHORT).show();
                     RandomizeItems();
-                    rounds_text.setText(++rounds + " / 10");
+                    rounds_text.setText(++rounds + " / 7");
                 }
                 return true;
             }
@@ -109,6 +110,7 @@ public class NumbersGameActivity extends AppCompatActivity {
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Done();
                 finish();
             }
         });
@@ -118,12 +120,10 @@ public class NumbersGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 new CountDownTimer(60000, 1000) {
                     public void onTick(long millisUntilFinished) {
-                        // Used for formatting digit to be in 2 digits only
                         NumberFormat f = new DecimalFormat("00");
                         long sec = (millisUntilFinished / 1000) % 60;
                         timer_text.setText(f.format(sec) + "s");
                     }
-                    // When the task is over it will print 00:00:00 there
                     public void onFinish() {
                         timer_text.setText("0s");
                         Done();
@@ -136,9 +136,9 @@ public class NumbersGameActivity extends AppCompatActivity {
 
     private void RandomizeItems(){
         items = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            int random1 = new Random().nextInt(51);
-            int random2 = new Random().nextInt(51);
+        for (int i = 0; i < 7; i++) {
+            int random1 = new Random().nextInt(25);
+            int random2 = new Random().nextInt(25);
             itemsMap.put(i, random1 + random2);
             items.add(random1 + " + " + random2);
         }
@@ -153,24 +153,26 @@ public class NumbersGameActivity extends AppCompatActivity {
     }
 
     private void Done(){
+        // lokalno čuvanje u obliku ključ:string(lista)
         SharedPreferences sharedPreferences =  getSharedPreferences("NumbersGameOrderStore", MODE_PRIVATE);
-        Integer score = sharedPreferences.getInt(LoginSignupPageActivity.current_email, 0);
+        String scores = sharedPreferences.getString(LoginSignupPageActivity.current_email, "");
+        // Svaka igra je sačuvana kao string liste na koji konkatiram sljedeći rezultat
+        scores = scores == "" ? rounds.toString() : scores + "," + rounds.toString();
         getSharedPreferences("NumbersGameOrderStore", MODE_PRIVATE)
                 .edit()
-                .putInt(LoginSignupPageActivity.current_email, rounds)
+                .putString(LoginSignupPageActivity.current_email, scores)
                 .apply();
         RemoveItems();
-        if(rounds==10){
-            game_finished_text.setText("10/10");
-        }else if(rounds<10 && rounds>5){
-            game_finished_text.setText("<10/10");
+        if(rounds==7){
+            game_finished_text.setText("7/7 Congrats!");
+        }else if(rounds<7 && rounds>3){
+            game_finished_text.setText(rounds+"/7 Well Done!");
         }else{
-            game_finished_text.setText("<<10/10");
+            game_finished_text.setText(rounds+"/7 You Can Do Better!");
         }
         button_done.setVisibility(View.GONE);
         timer_text.setVisibility(View.GONE);
         rounds_text.setVisibility(View.GONE);
         game_finished_text.setVisibility(View.VISIBLE) ;
-
     }
 }

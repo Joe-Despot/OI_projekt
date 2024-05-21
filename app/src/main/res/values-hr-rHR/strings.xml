@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>    <!-- Translations -->
+    <string name="settings">Postavke</string>
+    <string name="welcome">Dobrodošli</string>
+    <string name="results">Rezultati</string>
+    <string name="username">Ime: </string>
+    <string name="language">Jezik: </string>
+    <string name="chooselanguage">Odaberi Jezik</string>
+    <string name="audio">Zvuk: </string>
+    <string name="newname">Novo ime</string>
+    <string name="on">Uključeno</string>
+    <string name="off">Isključeno</string>
+</resources>

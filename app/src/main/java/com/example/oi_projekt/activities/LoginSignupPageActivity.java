@@ -3,7 +3,6 @@ package com.example.oi_projekt.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,13 +18,12 @@ public class LoginSignupPageActivity extends AppCompatActivity implements IFragm
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
     private ViewPageAdapter adapter;
-    private EditText edittext;
     public static String current_email = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login_signup_tab);
         tabLayout = findViewById(R.id.tab_layout);
         viewPager2 = findViewById(R.id.view_pager);
         tabLayout.addTab(tabLayout.newTab().setText("Login"));
@@ -53,9 +51,9 @@ public class LoginSignupPageActivity extends AppCompatActivity implements IFragm
         });
     }
 
+    // Handle the data passed from Login fragment
     @Override
     public void onDataPassLogin(String email, String password) {
-        // Handle the data passed from Login fragment
         SharedPreferences sharedPreferences =  getSharedPreferences("EmailPasswordStore", MODE_PRIVATE);
         if (sharedPreferences.contains(email)) {
             String saved_password = sharedPreferences.getString(email, "Value not found");
@@ -69,9 +67,9 @@ public class LoginSignupPageActivity extends AppCompatActivity implements IFragm
         }
     }
 
+    // Handle the data passed from Signup fragment
     @Override
     public void onDataPassSignup(String email, String password, String confirm_password) {
-        // Handle the data passed from Signup fragment
         SharedPreferences sharedPreferences =  getSharedPreferences("EmailPasswordStore", MODE_PRIVATE);
         if (sharedPreferences.contains(email)) {
             Toast.makeText(this, "User already exists!", Toast.LENGTH_SHORT).show();

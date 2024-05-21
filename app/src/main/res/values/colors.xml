@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="light_purple">#dbcaff</color>
     <color name="purple_200">#574f5e</color>
+    <color name="dark_purple">#574f5e</color>
     <color name="purple">#b392bd</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#b9fea9</color>
-    <color name="gray">#dbcaff</color>
-    <color name="light_purple">#dbcaff</color>
-
 </resources>

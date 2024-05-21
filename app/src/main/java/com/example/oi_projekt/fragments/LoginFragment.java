@@ -52,30 +52,13 @@ public class LoginFragment extends Fragment {
                 if(name.equals("") || password.equals("")) {
                     Intent gameActivity = new Intent(getActivity(), GameChooserActivity.class);
                     startActivity(gameActivity);
-                    Toast.makeText(getActivity(),"name and password required", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"Name and password required", Toast.LENGTH_LONG).show();
                 }
                 else {
                     dataPasser.onDataPassLogin(name, password);
                 }
             }
         });
-
-//        edittext.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                Log.d("custom log", s.toString());
-//            }
-//        });
         return view;
     }
 }

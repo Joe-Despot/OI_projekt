@@ -1,27 +1,42 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.OI_Projekt" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.OI_Projekt" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple</item>
-        <item name="colorPrimaryVariant">@color/black</item>
+        <item name="colorPrimary">@color/light_purple</item>
+        <item name="colorPrimaryVariant">@color/purple_200</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/purple</item>
-        <item name="colorSecondaryVariant">@color/purple</item>
+        <item name="colorSecondary">@color/light_purple</item>
+        <item name="colorSecondaryVariant">@color/black</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-  <!-- Base application theme. -->
+
+    <!-- Base application theme with no action bar. -->
     <style name="Base.Theme.OI_Projekt" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
+
+    <!-- Results bar style. -->
     <style name="progressBarBlue" parent="@style/Theme.AppCompat">
         <item name="colorAccent">@color/green</item>
     </style>
     <style name="progressBarStyle" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
         <item name="android:indeterminateDrawable">@drawable/progress_bar_drawable</item>
     </style>
+
+    <!-- Custom TextInputLayout style. -->
+    <style name="CustomTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+        <item name="boxStrokeColor">@color/purple</item> <!-- Color of the stroke when focused -->
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxStrokeWidth">2dp</item> <!-- Width of the stroke -->
+        <item name="boxCornerRadiusTopStart">20dp</item> <!-- Adjust corner radius as needed -->
+        <item name="boxCornerRadiusTopEnd">20dp</item>
+        <item name="boxCornerRadiusBottomStart">20dp</item>
+        <item name="boxCornerRadiusBottomEnd">20dp</item>
+    </style>
+
 </resources>

@@ -11,9 +11,10 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.oi_projekt.R;
-import com.example.oi_projekt.animation.MyBounceInterpolator;
+import com.example.oi_projekt.animation.MyBounce;
 
 public class GameChooserActivity extends AppCompatActivity {
+    //TODO username prikazati u main screenu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class GameChooserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Animation myAnim = AnimationUtils.loadAnimation(GameChooserActivity.this, R.anim.bounce);
-                MyBounceInterpolator interpolator = new MyBounceInterpolator(0.01, 20);
+                MyBounce interpolator = new MyBounce(0.01, 20);
                 myAnim.setInterpolator(interpolator);
                 settings_image.startAnimation(myAnim);
                 Intent settingsIntent = new Intent(GameChooserActivity.this, SettingsActivity.class);
@@ -39,7 +40,7 @@ public class GameChooserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Animation myAnim = AnimationUtils.loadAnimation(GameChooserActivity.this, R.anim.bounce);
-                MyBounceInterpolator interpolator = new MyBounceInterpolator(0.01, 20);
+                MyBounce interpolator = new MyBounce(0.01, 20);
                 myAnim.setInterpolator(interpolator);
                 menu_image.startAnimation(myAnim);
                 Intent resultIntent = new Intent(GameChooserActivity.this, ResultsActivity.class);
