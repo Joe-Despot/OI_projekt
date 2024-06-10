@@ -45,11 +45,12 @@
             />
         </androidx.constraintlayout.widget.ConstraintLayout>
             <TextView
+                android:id="@+id/colorGame"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:text="Calculator Game Scores"
+                android:text=""
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -61,6 +62,7 @@
                 android:scrollbars="horizontal"/>
 
         <TextView
+            android:id="@+id/orderEquationsGame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

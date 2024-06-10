@@ -8,10 +8,14 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,6 +31,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.oi_projekt.R;
 import com.example.oi_projekt.adapter.ItemAdapter;
 import com.example.oi_projekt.animation.ColorsBallView;
+import com.example.oi_projekt.animation.MyBounce;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -48,9 +53,10 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
     private View bottomLeft;
     private View bottomRight;
     private View middle;
-
     private TextView game_finished_text;
+    private TextView color_text;
 
+    private ImageButton back_button;
     private float[] gravity;
     private float[] geomagnetic;
     private float posX = 100;
@@ -60,31 +66,70 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
     private Button button_start;
     private TextView timer_text;
     private TextView rounds_text;
-    private TextView color_text;
     private String choosingColor;
+    private LinearLayout one_lolipop;
     Map<String, String> colorSectionsMap  = new HashMap<String, String>();
+    private MediaPlayer win_sound;
+    private MediaPlayer try_again_sound;
+    private MediaPlayer wrong_sound;
+    private MediaPlayer good_sound;
+
     private Integer rounds = 0;
-    Map<String, String> colorsHexMap  = new HashMap<String, String>() {{
+    Map<String, String> colorsHexMapEn  = new HashMap<String, String>() {{
         put("Red", "#cc3300");
         put("Green", "#009933");
         put("Yellow", "#ffff66");
         put("Orange", "#ff9900");
+        put("Pink", "#FFC0CB");
+        put("Purple", "#800080");
+        put("Brown", "#A52A2A");
+        put("Blue", "#0000FF");
     }};
-private boolean game_started_flag = false;
+    Map<String, String> colorsHexMapHr  = new HashMap<String, String>() {{
+        put("Crvena", "#cc3300");
+        put("Zelena", "#009933");
+        put("Žuta", "#ffff66");
+        put("Narančasta", "#ff9900");
+        put("Roza", "#FFC0CB");
+        put("Ljubičasta", "#800080");
+        put("Smeđa", "#A52A2A");
+        put("Plava", "#0000FF");
+    }};
+    String lang;
+    String color_string;
+
+    private boolean game_started_flag = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_colors_game);
 
-        int width= Resources.getSystem().getDisplayMetrics().widthPixels;
-        int height=Resources.getSystem().getDisplayMetrics().heightPixels;
+        SharedPreferences sharedPreferences_audio =  getSharedPreferences("LanguageSettingsStore", MODE_PRIVATE);
+        lang = sharedPreferences_audio.getString(LoginSignupPageActivity.current_email, "en");
+        switch (lang) {
+            case "en":
+                color_string = "COLOR";
+                break;
+            case "hr":
+                color_string = "BOJA";
+                break;
+            default:
+                color_string = "COLOR";
+                break;
+        }
+        win_sound = MediaPlayer.create(this,R.raw.win_sound);
+        wrong_sound = MediaPlayer.create(this,R.raw.wrong);
+        try_again_sound = MediaPlayer.create(this,R.raw.try_again);
+        good_sound = MediaPlayer.create(this,R.raw.good_sound);
+
         color_text= findViewById(R.id.color_text);
         textView = findViewById(R.id.textView3);
         ballImageView = findViewById(R.id.ballImageView);
         button_start = findViewById(R.id.start_button);
         timer_text = findViewById(R.id.timer_text);
         rounds_text = findViewById(R.id.rounds_text);
-
+        one_lolipop = findViewById(R.id.one_lolipop);
+        one_lolipop.setVisibility(View.GONE);
         bottomLeft = findViewById(R.id.bottomLeft);
         bottomRight = findViewById(R.id.bottomRight);
         topLeft = findViewById(R.id.topLeft);
@@ -98,6 +143,7 @@ private boolean game_started_flag = false;
 
         game_finished_text = findViewById(R.id.game_finished_text);
         game_finished_text.setVisibility(View.GONE);
+        back_button = findViewById(R.id.back_button);
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         if (sensorManager != null) {
@@ -113,12 +159,35 @@ private boolean game_started_flag = false;
             Toast.makeText(this, "Magnetometer not available", Toast.LENGTH_SHORT).show();
         }
 
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation myAnim = AnimationUtils.loadAnimation(ColorsGameActivity.this, R.anim.bounce);
+                MyBounce interpolator = new MyBounce(0.01, 20);
+                myAnim.setInterpolator(interpolator);
+                back_button.startAnimation(myAnim);
+                button_start.setVisibility(View.GONE);
+                timer_text.setVisibility(View.GONE);
+                rounds_text.setVisibility(View.GONE);
+                game_finished_text.setVisibility(View.VISIBLE) ;
+                ballImageView.setVisibility(View.GONE);                new CountDownTimer(2000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    @Override
+                    public void onFinish() {
+                        finish();
+                    }
+                }.start();
+            }
+        });
+
         button_start.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 game_started_flag= true;
                 randomizeColors();
-                new CountDownTimer(30000, 1000) {
+                new CountDownTimer(20000, 1000) {
                     public void onTick(long millisUntilFinished) {
                         NumberFormat f = new DecimalFormat("00");
                         long sec = (millisUntilFinished / 1000) % 20;
@@ -128,18 +197,36 @@ private boolean game_started_flag = false;
                         timer_text.setText("0s");
                         Done();
                     }
-                }.start();            }
+                }.start();
+            }
         });
+        color_text.setText(color_string);
     }
 
     private void randomizeColors() {
-        if(rounds == 7){
-            Done();
-        }
         int randomIndex;
         String randomValue;
-        List<String> keyList = new ArrayList<String>(colorsHexMap.keySet());
-        List<String> tmpKeySet = new ArrayList<>();
+        List<String> keyList;
+        List<String> tmpKeySet;
+        Map<String, String> colorsHexMap;
+
+        switch (lang) {
+            case "en":
+                keyList = new ArrayList<String>(colorsHexMapEn.keySet());
+                tmpKeySet= new ArrayList<>();
+                colorsHexMap = colorsHexMapEn;
+                break;
+            case "hr":
+                keyList = new ArrayList<String>(colorsHexMapHr.keySet());
+                tmpKeySet = new ArrayList<>();
+                colorsHexMap = colorsHexMapHr;
+                break;
+            default:
+                keyList = new ArrayList<String>(colorsHexMapEn.keySet());
+                tmpKeySet = new ArrayList<>();
+                colorsHexMap = colorsHexMapEn;
+                break;
+        }
 
         randomIndex = new Random().nextInt(keyList.size());
         randomValue = keyList.get(randomIndex);
@@ -250,39 +337,52 @@ private boolean game_started_flag = false;
                 else {
                     if (isViewOverlapping(ballImageView, bottomLeft) && game_started_flag) {
                         if(choosingColor.equalsIgnoreCase(colorSectionsMap.get("bottomLeft"))){
-                            textView.setText("win!");
-                            rounds++;
                             randomizeColors();
+                            rounds_text.setText(++rounds + " / 7");
+                            if(SettingsActivity.audioFlag)
+                                good_sound.start();
                         }
-                        else
-                            textView.setText("bottomLeft");
+                        else{
+                            if(SettingsActivity.audioFlag)
+                                wrong_sound.start();
+                        }
                     }
                     if (isViewOverlapping(ballImageView, bottomRight) && game_started_flag) {
                         if(choosingColor.equalsIgnoreCase(colorSectionsMap.get("bottomRight"))){
-                            textView.setText("win!");
-                            rounds++;
                             randomizeColors();
+                            rounds_text.setText(++rounds + " / 7");
+                            if(SettingsActivity.audioFlag)
+                                good_sound.start();
+
                         }
-                        else
-                            textView.setText("bottomRight");
+                        else{
+                            if(SettingsActivity.audioFlag)
+                                wrong_sound.start();
+                        }
                     }
                     if (isViewOverlapping(ballImageView, topLeft) && game_started_flag) {
                         if(choosingColor.equalsIgnoreCase(colorSectionsMap.get("topLeft"))){
-                            rounds++;
-                            textView.setText("win!");
                             randomizeColors();
+                            rounds_text.setText(++rounds + " / 7");
+                            if(SettingsActivity.audioFlag)
+                                good_sound.start();
                         }
-                        else
-                            textView.setText("topLeft");
+                        else{
+                            if(SettingsActivity.audioFlag)
+                                wrong_sound.start();
+                        }
                     }
                     if (isViewOverlapping(ballImageView, topRight) && game_started_flag) {
                         if(choosingColor.equalsIgnoreCase(colorSectionsMap.get("topRight"))){
-                            textView.setText("win!");
-                            rounds++;
                             randomizeColors();
+                            rounds_text.setText(++rounds + " / 7");
+                            if(SettingsActivity.audioFlag)
+                                good_sound.start();
                         }
-                        else
-                            textView.setText("topRight");
+                        else{
+                            if(SettingsActivity.audioFlag)
+                                wrong_sound.start();
+                        }
                     }
                 }
             }
@@ -311,6 +411,7 @@ private boolean game_started_flag = false;
     }
 
     private void Done(){
+        game_started_flag = false;
         // lokalno čuvanje u obliku ključ:string(lista)
         SharedPreferences sharedPreferences =  getSharedPreferences("ColorsGameStore", MODE_PRIVATE);
         String scores = sharedPreferences.getString(LoginSignupPageActivity.current_email, "");
@@ -321,16 +422,23 @@ private boolean game_started_flag = false;
                 .putString(LoginSignupPageActivity.current_email, scores)
                 .apply();
         RemoveItems();
-        if(rounds==7){
+        if(rounds>=7){
             game_finished_text.setText("7/7 Congrats!");
+            if(SettingsActivity.audioFlag)
+                win_sound.start();
         }else if(rounds<7 && rounds>3){
             game_finished_text.setText(rounds+"/7 Well Done!");
+            if(SettingsActivity.audioFlag)
+                win_sound.start();
         }else{
             game_finished_text.setText(rounds+"/7 You Can Do Better!");
+            if(SettingsActivity.audioFlag)
+                try_again_sound.start();
         }
         button_start.setVisibility(View.GONE);
         timer_text.setVisibility(View.GONE);
         rounds_text.setVisibility(View.GONE);
-        game_finished_text.setVisibility(View.VISIBLE) ;
+        game_finished_text.setVisibility(View.VISIBLE);
+        ballImageView.setVisibility(View.GONE);
     }
 }

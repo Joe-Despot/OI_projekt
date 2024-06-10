@@ -2,11 +2,14 @@ package com.example.oi_projekt.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -40,6 +43,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.oi_projekt.R;
 import com.example.oi_projekt.adapter.ItemAdapter;
+import com.example.oi_projekt.animation.MyBounce;
 
 public class NumbersGameActivity extends AppCompatActivity {
 
@@ -53,8 +57,10 @@ public class NumbersGameActivity extends AppCompatActivity {
     private TextView game_finished_text;
     private Integer rounds = 0;
     List<String> items;
-
-
+    private MediaPlayer win_sound;
+    private MediaPlayer try_again_sound;
+    private MediaPlayer good_sound;
+    private boolean game_started = false;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +74,9 @@ public class NumbersGameActivity extends AppCompatActivity {
         rounds_text = findViewById(R.id.rounds_text);
         game_finished_text = findViewById(R.id.game_finished_text);
         game_finished_text.setVisibility(View.GONE);
-
+        win_sound = MediaPlayer.create(this,R.raw.win_sound);
+        good_sound = MediaPlayer.create(this,R.raw.good_sound);
+        try_again_sound = MediaPlayer.create(this,R.raw.try_again);
 
         RandomizeItems();
 
@@ -91,10 +99,7 @@ public class NumbersGameActivity extends AppCompatActivity {
                     items_done.add(first_num+second_num);
                 }
                 if(items_done.equals(items_map)){
-                    if(rounds == 7){
-                        Done();
-                    }
-                    Toast.makeText(NumbersGameActivity.this, "Well Done!", Toast.LENGTH_SHORT).show();
+                    good_sound.start();
                     RandomizeItems();
                     rounds_text.setText(++rounds + " / 7");
                 }
@@ -110,15 +115,30 @@ public class NumbersGameActivity extends AppCompatActivity {
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Done();
-                finish();
+                Animation myAnim = AnimationUtils.loadAnimation(NumbersGameActivity.this, R.anim.bounce);
+                MyBounce interpolator = new MyBounce(0.01, 20);
+                myAnim.setInterpolator(interpolator);
+                back_button.startAnimation(myAnim);
+
+                RemoveItems();
+
+                new CountDownTimer(2000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    @Override
+                    public void onFinish() {
+                        finish();
+                    }
+                }.start();
             }
         });
 
         button_done.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                new CountDownTimer(60000, 1000) {
+                recyclerView.setVisibility((View.VISIBLE));
+                new CountDownTimer(20000, 1000) {
                     public void onTick(long millisUntilFinished) {
                         NumberFormat f = new DecimalFormat("00");
                         long sec = (millisUntilFinished / 1000) % 60;
@@ -132,11 +152,13 @@ public class NumbersGameActivity extends AppCompatActivity {
         });
 
         itemTouchHelper.attachToRecyclerView(recyclerView);
+        recyclerView.setVisibility(View.GONE);
+
     }
 
     private void RandomizeItems(){
         items = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 3; i++) {
             int random1 = new Random().nextInt(25);
             int random2 = new Random().nextInt(25);
             itemsMap.put(i, random1 + random2);
@@ -150,29 +172,34 @@ public class NumbersGameActivity extends AppCompatActivity {
         items = new ArrayList<>();
         adapter = new ItemAdapter(items, this);
         recyclerView.setAdapter(adapter);
+        button_done.setVisibility(View.GONE);
+        timer_text.setVisibility(View.GONE);
+        rounds_text.setVisibility(View.GONE);
+        game_finished_text.setVisibility(View.VISIBLE);
+
     }
 
     private void Done(){
-        // lokalno čuvanje u obliku ključ:string(lista)
         SharedPreferences sharedPreferences =  getSharedPreferences("NumbersGameOrderStore", MODE_PRIVATE);
         String scores = sharedPreferences.getString(LoginSignupPageActivity.current_email, "");
-        // Svaka igra je sačuvana kao string liste na koji konkatiram sljedeći rezultat
         scores = scores == "" ? rounds.toString() : scores + "," + rounds.toString();
         getSharedPreferences("NumbersGameOrderStore", MODE_PRIVATE)
                 .edit()
                 .putString(LoginSignupPageActivity.current_email, scores)
                 .apply();
         RemoveItems();
-        if(rounds==7){
-            game_finished_text.setText("7/7 Congrats!");
+        if(rounds>=7){
+            game_finished_text.setText(rounds+"/7 Congrats!");
+            if(SettingsActivity.audioFlag)
+                win_sound.start();
         }else if(rounds<7 && rounds>3){
             game_finished_text.setText(rounds+"/7 Well Done!");
+            if(SettingsActivity.audioFlag)
+                win_sound.start();
         }else{
             game_finished_text.setText(rounds+"/7 You Can Do Better!");
+            if(SettingsActivity.audioFlag)
+                try_again_sound.start();
         }
-        button_done.setVisibility(View.GONE);
-        timer_text.setVisibility(View.GONE);
-        rounds_text.setVisibility(View.GONE);
-        game_finished_text.setVisibility(View.VISIBLE) ;
     }
 }

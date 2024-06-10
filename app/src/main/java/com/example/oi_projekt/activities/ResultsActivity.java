@@ -1,5 +1,6 @@
 package com.example.oi_projekt.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -24,15 +25,19 @@ import java.util.ArrayList;
 
 public class ResultsActivity extends AppCompatActivity {
 
-    //TODO niš uz calculator game nije implementirano, dodati game
     private TextView settings_title_textview;
     private ImageButton back_button;
     private RecyclerView recyclerView;
     private RecyclerView recyclerView2;
-    private CardAdapter cardAdapterCalculator;
+    private CardAdapter cardAdapterColorGame;
     private CardAdapter cardAdapterOrderEquations;
-    private ArrayList<String> cardListCalculator;
+    private ArrayList<String> cardListColorGame;
     private ArrayList<String> cardListOrderEquations;
+    private TextView orderEquationsText;
+    private TextView colorGameText;
+    private String order_equations_string;
+    private String color_game_string;
+    String results_string;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,35 +49,58 @@ public class ResultsActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        SharedPreferences sharedPreferences_audio =  getSharedPreferences("LanguageSettingsStore", MODE_PRIVATE);
+        String lang = sharedPreferences_audio.getString(LoginSignupPageActivity.current_email, "en");
+        switch (lang) {
+            case "en":
+                results_string = "Results";
+                color_game_string = "Color Game Scores";
+                order_equations_string = "Order Equations Game Scores";
+                break;
+            case "hr":
+                results_string = "Rezultati";
+                color_game_string = "Rezultati Igre Boja";
+                order_equations_string = "Rezultati Igre Poredavanje Jednadžbi";
+                break;
+            default:
+
+                break;
+        }
         back_button = findViewById(R.id.back_button);
         settings_title_textview = findViewById(R.id.settings_title);
-        settings_title_textview.setText(R.string.settings);
+        colorGameText = findViewById(R.id.colorGame);
+        orderEquationsText = findViewById(R.id.orderEquationsGame);
 
+        settings_title_textview.setText(results_string);
+        colorGameText.setText(color_game_string);
+        orderEquationsText.setText(order_equations_string);
+
+        SharedPreferences sharedPreferencesColorGame =  getSharedPreferences("ColorsGameStore", MODE_PRIVATE);
         SharedPreferences sharedPreferences =  getSharedPreferences("NumbersGameOrderStore", MODE_PRIVATE);
         String numbers_game_order_score_saved = sharedPreferences.getString(LoginSignupPageActivity.current_email, "");
+        String colors_game_score_saved = sharedPreferencesColorGame.getString(LoginSignupPageActivity.current_email, "");
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView2 = findViewById(R.id.recyclerView2);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView2.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        cardListCalculator = new ArrayList<>();
+        cardListColorGame = new ArrayList<>();
         cardListOrderEquations = new ArrayList<>();
 
-        cardAdapterCalculator = new CardAdapter(cardListCalculator);
-        cardAdapterOrderEquations = new CardAdapter(cardListOrderEquations);
-
-        recyclerView.setAdapter(cardAdapterCalculator);
+        cardAdapterColorGame = new CardAdapter(cardListColorGame,lang);
+        cardAdapterOrderEquations = new CardAdapter(cardListOrderEquations,lang);
+        recyclerView.setAdapter(cardAdapterColorGame);
         recyclerView2.setAdapter(cardAdapterOrderEquations);
 
         for(String s: numbers_game_order_score_saved.split(",")){
-            cardListOrderEquations.add(s + " / 7");
+            cardListOrderEquations.add(s);
             cardAdapterOrderEquations.notifyItemInserted(cardListOrderEquations.size() - 1);
         }
 
-        for(String s: numbers_game_order_score_saved.split(",")){
-            cardListCalculator.add(s + " / 7");
-            cardAdapterCalculator.notifyItemInserted(cardListCalculator.size() - 1);
+        for(String s: colors_game_score_saved.split(",")){
+            cardListColorGame.add(s);
+            cardAdapterColorGame.notifyItemInserted(cardListColorGame.size() - 1);
         }
 
 
@@ -83,7 +111,9 @@ public class ResultsActivity extends AppCompatActivity {
                 MyBounce interpolator = new MyBounce(0.2, 20);
                 myAnim.setInterpolator(interpolator);
                 back_button.startAnimation(myAnim);
+                Intent resultIntent = new Intent(ResultsActivity.this, GameChooserActivity.class);
                 finish();
+                startActivity(resultIntent);
             }
         });
     }

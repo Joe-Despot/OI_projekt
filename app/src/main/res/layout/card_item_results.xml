@@ -26,7 +26,7 @@
             android:layout_height="match_parent">
 
             <ProgressBar
-                android:id="@+id/CalculatorBar"
+                android:id="@+id/ProgressBar"
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
@@ -52,14 +52,30 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/textView2"
+    <LinearLayout
+        android:id="@+id/one_lolipop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Something else"
-        android:textColor="@color/light_purple"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:text=""
+            android:textSize="22sp"></TextView>
+
+        <ImageView
+            android:id="@+id/imageViewLolipop"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/lolipop"></ImageView>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

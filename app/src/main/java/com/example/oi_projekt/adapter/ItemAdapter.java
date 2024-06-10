@@ -3,16 +3,13 @@ package com.example.oi_projekt.adapter;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.oi_projekt.R;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -36,6 +33,24 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         holder.textView.setText(items.get(position));
+        holder.itemView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Change color on touch down
+                        holder.setBackgroundColor(R.color.green); // Use your desired color
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        // Reset color on touch release or cancel
+                        holder.setBackgroundColor(android.R.color.transparent); // Use your default color
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -63,6 +78,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         ItemViewHolder(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.textView);
+        }
+
+        public void setBackgroundColor(int color) {
+            itemView.setBackgroundColor(color);
         }
     }
 }

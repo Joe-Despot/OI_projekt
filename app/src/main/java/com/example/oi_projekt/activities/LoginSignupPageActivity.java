@@ -20,19 +20,22 @@ public class LoginSignupPageActivity extends AppCompatActivity implements IFragm
     private ViewPager2 viewPager2;
     private ViewPageAdapter adapter;
     public static String current_email = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_signup_tab);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         tabLayout = findViewById(R.id.tab_layout);
         viewPager2 = findViewById(R.id.view_pager);
+
         tabLayout.addTab(tabLayout.newTab().setText("Login"));
         tabLayout.addTab(tabLayout.newTab().setText("Signup"));
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         adapter = new ViewPageAdapter(fragmentManager, getLifecycle());
         viewPager2.setAdapter(adapter);
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
