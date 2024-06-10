@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="light_purple">#dbcaff</color>
-    <color name="purple_200">#574f5e</color>
     <color name="dark_purple">#574f5e</color>
     <color name="purple">#b392bd</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#b9fea9</color>
+
+    <color name="gray1">#707070</color>
+    <color name="gray2">#787878</color>
+    <color name="gray3">#808080</color>
+    <color name="gray4">#888888</color>
+
+    <color name="red">#cc3300</color>
+    <color name="green1">#009933</color>
+    <color name="blue">#3366cc</color>
+    <color name="yellow">#ffff66</color>
+    <color name="orange">#ff9900</color>
+    <color name="gray">#a3a3a3</color>
+
+
 </resources>

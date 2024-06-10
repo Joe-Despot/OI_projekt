@@ -24,6 +24,8 @@ public class GameChooserActivity extends AppCompatActivity {
         ImageView settings_image =(ImageView)findViewById(R.id.settings_button);
         ImageView menu_image =(ImageView)findViewById(R.id.results_button);
         ImageView numbers_game_button =(ImageView)findViewById(R.id.numbers_game_button);
+        ImageView colors_game_button =(ImageView)findViewById(R.id.colors_game_button);
+        ImageView letters_game_button =(ImageView)findViewById(R.id.letters_game_button);
 
         settings_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +58,21 @@ public class GameChooserActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         numbers_game_button.setImageResource(R.drawable.doors_closed_numbers);
+                    }
+                }, 1500);
+                startActivity(intent);
+            }
+        });
+
+        colors_game_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                colors_game_button.setImageResource(R.drawable.door_castle_opened_colors);
+                Intent intent = new Intent(GameChooserActivity.this, ColorsGameActivity.class);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        colors_game_button.setImageResource(R.drawable.door_castle_closed_colors);
                     }
                 }, 1500);
                 startActivity(intent);

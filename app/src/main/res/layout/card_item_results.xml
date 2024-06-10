@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
                 android:progress="25"
-                android:progressBackgroundTint="@color/purple_200"
+                android:progressBackgroundTint="@color/dark_purple"
                 android:progressTint="@color/green"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
