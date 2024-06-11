@@ -1,38 +1,231 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ShapesGameActivity">
+    tools:context=".activities.ShapesGameActivity"
+    android:orientation="vertical"
+    android:id="@+id/parentLayoutRoot"
+    android:background="@drawable/lavander_field"
+    >
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/icons_arrow_back_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Drag and Drop Example"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="30dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tutorials Point"
-        android:id="@+id/textView2"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:textSize="30dp"
-        android:textColor="#ff14be3c" />>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:orientation="vertical"
+    android:layout_marginBottom="80dp"
+    android:layout_marginTop="80dp"
+    android:id="@+id/parentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    >
+    <ImageView
+        android:id="@+id/draggableShape1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/shape_circle"
+        app:layout_constraintStart_toStartOf="@+id/draggableShape4"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:id="@+id/draggableShape2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/shape_circle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/draggableShape3"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="5dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/shape_circle"
+        app:layout_constraintEnd_toStartOf="@+id/draggableShape2"
+        app:layout_constraintStart_toEndOf="@+id/draggableShape1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/draggableShape4"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/shape_circle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/draggableShape3" />
+
+    <ImageView
+        android:id="@+id/draggableShape5"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/shape_circle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/draggableShape3" />
+
+    <ImageView
+        android:id="@+id/draggableShape6"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/shape_circle"
+        app:layout_constraintEnd_toStartOf="@+id/draggableShape5"
+        app:layout_constraintStart_toEndOf="@+id/draggableShape4"
+        app:layout_constraintTop_toBottomOf="@+id/draggableShape3" />
+
+    <TextView
+        android:id="@+id/dropOfText1"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
+        android:text="Shape1"
+        android:background="@drawable/shape_drop_point_border"
+        android:layout_margin="5dp"
+        android:textColor="@color/dark_purple"
+        android:textSize="20sp"
+        >
+    </TextView>
+
+    <TextView
+        android:id="@+id/dropOfText2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:gravity="center"
+        android:text="Shape2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/shape_drop_point_border"
+        android:layout_margin="5dp"
+        android:textColor="@color/dark_purple"
+        android:textSize="20sp"
+        ></TextView>
+
+    <TextView
+        android:layout_margin="5dp"
+        android:id="@+id/dropOfText3"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/shape_drop_point_border"
+        android:gravity="center"
+        android:text="Shape3"
+        android:textColor="@color/dark_purple"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/dropOfText2"
+        app:layout_constraintEnd_toEndOf="parent"></TextView>
+
+    <TextView
+        android:layout_margin="5dp"
+        android:id="@+id/dropOfText4"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/shape_drop_point_border"
+        android:gravity="center"
+        android:text="Shape4"
+        android:textColor="@color/dark_purple"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/dropOfText1"
+        app:layout_constraintStart_toStartOf="parent"></TextView>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:src="@drawable/ball"
-        android:layout_below="@+id/textView2"
-        android:layout_alignRight="@+id/textView2"
-        android:layout_alignEnd="@+id/textView2"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_alignStart="@+id/textView2" />
+        android:layout_centerInParent="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        android:text="Start!"
+        app:cornerRadius = "30dp"
+        android:layout_marginBottom="50dp">
+    </Button>
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/timer_text"
+        android:textSize="18sp"
+        android:text="20s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/custom_border"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="10dp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/rounds_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_border"
+        android:text="0"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="30dp"
+        android:layout_marginStart="10dp"
+        >
+    </TextView>
+
+
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/game_finished_text"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/win_border"
+        android:text="0"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </TextView>
+
+    <LinearLayout
+        android:id="@+id/one_lolipop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_finished_text"
+        android:gravity="center_vertical"
+        >
+
+        <TextView
+            android:id="@+id/textViewLolipop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:text="1"
+            android:textSize="22sp"></TextView>
+
+        <ImageView
+            android:id="@+id/imageViewLolipop"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/lolipop"></ImageView>
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

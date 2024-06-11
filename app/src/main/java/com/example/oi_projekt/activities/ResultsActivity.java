@@ -29,14 +29,19 @@ public class ResultsActivity extends AppCompatActivity {
     private ImageButton back_button;
     private RecyclerView recyclerView;
     private RecyclerView recyclerView2;
+    private RecyclerView recyclerView3;
     private CardAdapter cardAdapterColorGame;
     private CardAdapter cardAdapterOrderEquations;
+    private CardAdapter cardAdapterShapeGame;
     private ArrayList<String> cardListColorGame;
     private ArrayList<String> cardListOrderEquations;
+    private ArrayList<String> cardListShapeGame;
     private TextView orderEquationsText;
     private TextView colorGameText;
+    private TextView shapeGameText;
     private String order_equations_string;
     private String color_game_string;
+    private String shape_game_string;
     String results_string;
 
     @Override
@@ -53,11 +58,13 @@ public class ResultsActivity extends AppCompatActivity {
         String lang = sharedPreferences_audio.getString(LoginSignupPageActivity.current_email, "en");
         switch (lang) {
             case "en":
+                shape_game_string = "Shapes Game Scores";
                 results_string = "Results";
                 color_game_string = "Color Game Scores";
                 order_equations_string = "Order Equations Game Scores";
                 break;
             case "hr":
+                shape_game_string = "Rezultati Igre Oblika";
                 results_string = "Rezultati";
                 color_game_string = "Rezultati Igre Boja";
                 order_equations_string = "Rezultati Igre Poredavanje Jednadžbi";
@@ -70,28 +77,37 @@ public class ResultsActivity extends AppCompatActivity {
         settings_title_textview = findViewById(R.id.settings_title);
         colorGameText = findViewById(R.id.colorGame);
         orderEquationsText = findViewById(R.id.orderEquationsGame);
+        shapeGameText = findViewById(R.id.shapesGame);
 
         settings_title_textview.setText(results_string);
         colorGameText.setText(color_game_string);
         orderEquationsText.setText(order_equations_string);
+        shapeGameText.setText(shape_game_string);
 
         SharedPreferences sharedPreferencesColorGame =  getSharedPreferences("ColorsGameStore", MODE_PRIVATE);
         SharedPreferences sharedPreferences =  getSharedPreferences("NumbersGameOrderStore", MODE_PRIVATE);
+        SharedPreferences sharedPreferencesShapeGame =  getSharedPreferences("ShapesGameStore", MODE_PRIVATE);
         String numbers_game_order_score_saved = sharedPreferences.getString(LoginSignupPageActivity.current_email, "");
         String colors_game_score_saved = sharedPreferencesColorGame.getString(LoginSignupPageActivity.current_email, "");
+        String shapes_game_score_saved = sharedPreferencesShapeGame.getString(LoginSignupPageActivity.current_email, "");
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView2 = findViewById(R.id.recyclerView2);
+        recyclerView3 = findViewById(R.id.recyclerView3);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView2.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView3.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         cardListColorGame = new ArrayList<>();
         cardListOrderEquations = new ArrayList<>();
+        cardListShapeGame = new ArrayList<>();
 
         cardAdapterColorGame = new CardAdapter(cardListColorGame,lang);
         cardAdapterOrderEquations = new CardAdapter(cardListOrderEquations,lang);
+        cardAdapterShapeGame = new CardAdapter(cardListShapeGame,lang);
         recyclerView.setAdapter(cardAdapterColorGame);
         recyclerView2.setAdapter(cardAdapterOrderEquations);
+        recyclerView3.setAdapter(cardAdapterShapeGame);
 
         for(String s: numbers_game_order_score_saved.split(",")){
             cardListOrderEquations.add(s);
@@ -101,6 +117,11 @@ public class ResultsActivity extends AppCompatActivity {
         for(String s: colors_game_score_saved.split(",")){
             cardListColorGame.add(s);
             cardAdapterColorGame.notifyItemInserted(cardListColorGame.size() - 1);
+        }
+
+        for(String s: shapes_game_score_saved.split(",")){
+            cardListShapeGame.add(s);
+            cardAdapterShapeGame.notifyItemInserted(cardListShapeGame.size() - 1);
         }
 
 

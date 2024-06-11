@@ -1,7 +1,6 @@
 package com.example.oi_projekt.activities;
 
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.hardware.Sensor;
@@ -18,35 +17,26 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.oi_projekt.R;
-import com.example.oi_projekt.adapter.ItemAdapter;
-import com.example.oi_projekt.animation.ColorsBallView;
 import com.example.oi_projekt.animation.MyBounce;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import com.example.oi_projekt.R;
 
 public class ColorsGameActivity extends AppCompatActivity implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private Sensor magnetometer;
-    private TextView textView;
     private ImageView ballImageView;
     private View topLeft;
     private View topRight;
@@ -55,7 +45,6 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
     private View middle;
     private TextView game_finished_text;
     private TextView color_text;
-
     private ImageButton back_button;
     private float[] gravity;
     private float[] geomagnetic;
@@ -73,7 +62,7 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
     private MediaPlayer try_again_sound;
     private MediaPlayer wrong_sound;
     private MediaPlayer good_sound;
-
+    ConstraintLayout parentView;
     private Integer rounds = 0;
     Map<String, String> colorsHexMapEn  = new HashMap<String, String>() {{
         put("Red", "#cc3300");
@@ -122,8 +111,9 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
         try_again_sound = MediaPlayer.create(this,R.raw.try_again);
         good_sound = MediaPlayer.create(this,R.raw.good_sound);
 
+        parentView=findViewById(R.id.parentViewColorsGame);
+
         color_text= findViewById(R.id.color_text);
-        textView = findViewById(R.id.textView3);
         ballImageView = findViewById(R.id.ballImageView);
         button_start = findViewById(R.id.start_button);
         timer_text = findViewById(R.id.timer_text);
@@ -166,11 +156,8 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
                 MyBounce interpolator = new MyBounce(0.01, 20);
                 myAnim.setInterpolator(interpolator);
                 back_button.startAnimation(myAnim);
-                button_start.setVisibility(View.GONE);
-                timer_text.setVisibility(View.GONE);
-                rounds_text.setVisibility(View.GONE);
-                game_finished_text.setVisibility(View.VISIBLE) ;
-                ballImageView.setVisibility(View.GONE);                new CountDownTimer(2000, 1000) {
+                RemoveItems();
+                new CountDownTimer(1000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                     }
@@ -329,28 +316,14 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
                     ballImageView.setX(posX);
                 }
 
-                // Check for overlap
                 if (isViewOverlapping(ballImageView, middle) && game_started_flag) {
-                    // Do something when the ImageView overlaps with the LinearLayout
-                    textView.setText("mid");
                 }
                 else {
                     if (isViewOverlapping(ballImageView, bottomLeft) && game_started_flag) {
                         if(choosingColor.equalsIgnoreCase(colorSectionsMap.get("bottomLeft"))){
                             randomizeColors();
-                            rounds_text.setText(++rounds + " / 7");
-                            if(SettingsActivity.audioFlag)
-                                good_sound.start();
-                        }
-                        else{
-                            if(SettingsActivity.audioFlag)
-                                wrong_sound.start();
-                        }
-                    }
-                    if (isViewOverlapping(ballImageView, bottomRight) && game_started_flag) {
-                        if(choosingColor.equalsIgnoreCase(colorSectionsMap.get("bottomRight"))){
-                            randomizeColors();
-                            rounds_text.setText(++rounds + " / 7");
+                            rounds_text.setText((++rounds).toString());
+
                             if(SettingsActivity.audioFlag)
                                 good_sound.start();
 
@@ -360,10 +333,23 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
                                 wrong_sound.start();
                         }
                     }
+                    if (isViewOverlapping(ballImageView, bottomRight) && game_started_flag) {
+                        if(choosingColor.equalsIgnoreCase(colorSectionsMap.get("bottomRight"))){
+                            randomizeColors();
+                            rounds_text.setText((++rounds).toString());
+                            parentView.setBackgroundResource(R.drawable.purple_good_screen);
+                            if(SettingsActivity.audioFlag)
+                                good_sound.start();}
+                        else{
+                            if(SettingsActivity.audioFlag)
+                                wrong_sound.start();
+                        }
+                    }
                     if (isViewOverlapping(ballImageView, topLeft) && game_started_flag) {
                         if(choosingColor.equalsIgnoreCase(colorSectionsMap.get("topLeft"))){
                             randomizeColors();
-                            rounds_text.setText(++rounds + " / 7");
+                            rounds_text.setText((++rounds).toString());
+                            parentView.setBackgroundResource(R.drawable.purple_good_screen);
                             if(SettingsActivity.audioFlag)
                                 good_sound.start();
                         }
@@ -375,7 +361,8 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
                     if (isViewOverlapping(ballImageView, topRight) && game_started_flag) {
                         if(choosingColor.equalsIgnoreCase(colorSectionsMap.get("topRight"))){
                             randomizeColors();
-                            rounds_text.setText(++rounds + " / 7");
+                            rounds_text.setText((++rounds).toString());
+                            parentView.setBackgroundResource(R.drawable.purple_good_screen);
                             if(SettingsActivity.audioFlag)
                                 good_sound.start();
                         }
@@ -408,6 +395,11 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
         bottomRight.setBackgroundResource(R.color.purple);
         topLeft.setBackgroundResource(R.color.purple);
         topRight.setBackgroundResource(R.color.purple);
+        color_text.setVisibility(View.GONE);
+        button_start.setVisibility(View.GONE);
+        timer_text.setVisibility(View.GONE);
+        rounds_text.setVisibility(View.GONE);
+        ballImageView.setVisibility(View.GONE);
     }
 
     private void Done(){
@@ -422,23 +414,20 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
                 .putString(LoginSignupPageActivity.current_email, scores)
                 .apply();
         RemoveItems();
+        game_finished_text.setVisibility(View.VISIBLE);
+
         if(rounds>=7){
-            game_finished_text.setText("7/7 Congrats!");
+            game_finished_text.setText(rounds+" Congrats!");
             if(SettingsActivity.audioFlag)
                 win_sound.start();
         }else if(rounds<7 && rounds>3){
-            game_finished_text.setText(rounds+"/7 Well Done!");
+            game_finished_text.setText(rounds+" Well Done!");
             if(SettingsActivity.audioFlag)
                 win_sound.start();
         }else{
-            game_finished_text.setText(rounds+"/7 You Can Do Better!");
+            game_finished_text.setText(rounds+" You Can Do Better!");
             if(SettingsActivity.audioFlag)
                 try_again_sound.start();
         }
-        button_start.setVisibility(View.GONE);
-        timer_text.setVisibility(View.GONE);
-        rounds_text.setVisibility(View.GONE);
-        game_finished_text.setVisibility(View.VISIBLE);
-        ballImageView.setVisibility(View.GONE);
     }
 }

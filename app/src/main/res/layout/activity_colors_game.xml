@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.ColorsGameActivity"
     android:background="@color/purple"
+    android:id="@+id/parentViewColorsGame"
     >
     <ImageButton
         android:id="@+id/back_button"
@@ -76,6 +77,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:background="#0000FF"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line" />
 
         <View
@@ -106,14 +108,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
     <Button
         android:id="@+id/start_button"
         android:layout_width="wrap_content"
@@ -146,7 +140,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_border"
-        android:text="0/7"
+        android:text="0"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -160,10 +154,10 @@
     <TextView
         android:gravity="center"
         android:id="@+id/game_finished_text"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:background="@drawable/win_border"
-        android:text="0/7"
+        android:text="0"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

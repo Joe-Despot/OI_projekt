@@ -52,7 +52,6 @@ public class SignupFragment extends Fragment {
                 String confirm_password = signup_password_confirm.getText().toString();
                 if(name == "" || password == "" || confirm_password=="") {
                     Toast.makeText(getActivity(),"Email, password and confirmed password are required!", Toast.LENGTH_LONG).show();
-                    Log.d("LOG", "1");
                 }
                 else {
                     dataPasser.onDataPassSignup(name, password, confirm_password);

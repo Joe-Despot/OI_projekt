@@ -69,7 +69,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             }
         }
         notifyItemMoved(fromPosition, toPosition);
-        Log.d("TAG", "done moving");
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {

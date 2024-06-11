@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Horizontal Bar -->
+    <path
+        android:fillColor="@color/light_purple"
+        android:pathData="M4,22h40v4h-40z"
+        android:strokeWidth="2"
+        android:strokeColor="@color/dark_purple"
+        />
+    <!-- Vertical Bar -->
+    <path
+        android:fillColor="@color/light_purple"
+        android:pathData="M22,4v40h4v-40z"
+        android:strokeColor="@color/dark_purple"
+        android:strokeWidth="2"
+        />
+</vector>

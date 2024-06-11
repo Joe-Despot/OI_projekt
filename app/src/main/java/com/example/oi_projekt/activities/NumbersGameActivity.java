@@ -101,7 +101,7 @@ public class NumbersGameActivity extends AppCompatActivity {
                 if(items_done.equals(items_map)){
                     good_sound.start();
                     RandomizeItems();
-                    rounds_text.setText(++rounds + " / 7");
+                    rounds_text.setText((++rounds).toString());
                 }
                 return true;
             }
@@ -119,10 +119,8 @@ public class NumbersGameActivity extends AppCompatActivity {
                 MyBounce interpolator = new MyBounce(0.01, 20);
                 myAnim.setInterpolator(interpolator);
                 back_button.startAnimation(myAnim);
-
                 RemoveItems();
-
-                new CountDownTimer(2000, 1000) {
+                new CountDownTimer(1000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                     }
@@ -175,8 +173,6 @@ public class NumbersGameActivity extends AppCompatActivity {
         button_done.setVisibility(View.GONE);
         timer_text.setVisibility(View.GONE);
         rounds_text.setVisibility(View.GONE);
-        game_finished_text.setVisibility(View.VISIBLE);
-
     }
 
     private void Done(){
@@ -188,16 +184,18 @@ public class NumbersGameActivity extends AppCompatActivity {
                 .putString(LoginSignupPageActivity.current_email, scores)
                 .apply();
         RemoveItems();
+        game_finished_text.setVisibility(View.VISIBLE);
+
         if(rounds>=7){
-            game_finished_text.setText(rounds+"/7 Congrats!");
+            game_finished_text.setText(rounds+" Congrats!");
             if(SettingsActivity.audioFlag)
                 win_sound.start();
         }else if(rounds<7 && rounds>3){
-            game_finished_text.setText(rounds+"/7 Well Done!");
+            game_finished_text.setText(rounds+" Well Done!");
             if(SettingsActivity.audioFlag)
                 win_sound.start();
         }else{
-            game_finished_text.setText(rounds+"/7 You Can Do Better!");
+            game_finished_text.setText(rounds+" You Can Do Better!");
             if(SettingsActivity.audioFlag)
                 try_again_sound.start();
         }

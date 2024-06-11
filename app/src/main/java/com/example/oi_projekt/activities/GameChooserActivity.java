@@ -25,7 +25,6 @@ public class GameChooserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gamechooser_activity);
-        Toast.makeText(GameChooserActivity.this, "______", Toast.LENGTH_SHORT).show();
         SharedPreferences sharedPreferences_audio =  getSharedPreferences("LanguageSettingsStore", MODE_PRIVATE);
         String lang = sharedPreferences_audio.getString(LoginSignupPageActivity.current_email, "en");
         switch (lang) {
@@ -42,7 +41,7 @@ public class GameChooserActivity extends AppCompatActivity {
         ImageView menu_image =(ImageView)findViewById(R.id.results_button);
         ImageView numbers_game_button =(ImageView)findViewById(R.id.numbers_game_button);
         ImageView colors_game_button =(ImageView)findViewById(R.id.colors_game_button);
-        ImageView letters_game_button =(ImageView)findViewById(R.id.letters_game_button);
+        ImageView shapes_game_button =(ImageView)findViewById(R.id.shapes_game_button);
         welcomeText = findViewById(R.id.welcome_text);
 
         SharedPreferences sharedPreferences_name = getSharedPreferences("NameSettingsStore", MODE_PRIVATE);
@@ -97,6 +96,21 @@ public class GameChooserActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         colors_game_button.setImageResource(R.drawable.door_castle_closed_colors);
+                    }
+                }, 1500);
+                startActivity(intent);
+            }
+        });
+
+        shapes_game_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shapes_game_button.setImageResource(R.drawable.door_castle_opened_shape);
+                Intent intent = new Intent(GameChooserActivity.this, ShapesGameActivity.class);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        shapes_game_button.setImageResource(R.drawable.doors_castle_closed_shapes);
                     }
                 }, 1500);
                 startActivity(intent);
