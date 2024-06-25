@@ -46,7 +46,7 @@ import com.example.oi_projekt.adapter.ItemAdapter;
 import com.example.oi_projekt.animation.MyBounce;
 
 public class NumbersGameActivity extends AppCompatActivity {
-
+    private String you_can_better, well_done, congrats;
     private Button button_done;
     private ImageButton back_button;
     HashMap itemsMap = new HashMap<Integer, Integer>();
@@ -61,10 +61,33 @@ public class NumbersGameActivity extends AppCompatActivity {
     private MediaPlayer try_again_sound;
     private MediaPlayer good_sound;
     private boolean game_started = false;
+    CountDownTimer timer_start;
+    String lang;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_numbers_game);
+
+        SharedPreferences sharedPreferences_audio =  getSharedPreferences("LanguageSettingsStore", MODE_PRIVATE);
+        lang = sharedPreferences_audio.getString(LoginSignupPageActivity.current_email, "en");
+        switch (lang) {
+            case "en":
+                you_can_better = "You can do better!";
+                congrats = "Congrats!";
+                well_done = "Well done!";
+                break;
+            case "hr":
+                you_can_better = "Možeš bolje!";
+                congrats = "Odlično!";
+                well_done = "Vrlo dobro!";
+                break;
+            default:
+                you_can_better = "You can do better!";
+                congrats = "Congrats!";
+                well_done = "Well done!";
+                break;
+        }
 
         back_button = findViewById(R.id.back_button);
         recyclerView = findViewById(R.id.recyclerView);
@@ -126,6 +149,8 @@ public class NumbersGameActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onFinish() {
+                        if(timer_start!=null)
+                            timer_start.cancel();
                         finish();
                     }
                 }.start();
@@ -136,7 +161,8 @@ public class NumbersGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 recyclerView.setVisibility((View.VISIBLE));
-                new CountDownTimer(20000, 1000) {
+                button_done.setEnabled(false);
+                timer_start = new CountDownTimer(30000, 1000) {
                     public void onTick(long millisUntilFinished) {
                         NumberFormat f = new DecimalFormat("00");
                         long sec = (millisUntilFinished / 1000) % 60;
@@ -146,19 +172,18 @@ public class NumbersGameActivity extends AppCompatActivity {
                         timer_text.setText("0s");
                         Done();
                     }
-                }.start();            }
+                }.start();
+            }
         });
-
         itemTouchHelper.attachToRecyclerView(recyclerView);
         recyclerView.setVisibility(View.GONE);
-
     }
 
     private void RandomizeItems(){
         items = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            int random1 = new Random().nextInt(25);
-            int random2 = new Random().nextInt(25);
+        for (int i = 0; i < 7; i++) {
+            int random1 = new Random().nextInt(15);
+            int random2 = new Random().nextInt(15);
             itemsMap.put(i, random1 + random2);
             items.add(random1 + " + " + random2);
         }
@@ -187,15 +212,15 @@ public class NumbersGameActivity extends AppCompatActivity {
         game_finished_text.setVisibility(View.VISIBLE);
 
         if(rounds>=7){
-            game_finished_text.setText(rounds+" Congrats!");
+            game_finished_text.setText(rounds + " " + congrats);
             if(SettingsActivity.audioFlag)
                 win_sound.start();
         }else if(rounds<7 && rounds>3){
-            game_finished_text.setText(rounds+" Well Done!");
+            game_finished_text.setText(rounds + " " + well_done);
             if(SettingsActivity.audioFlag)
                 win_sound.start();
         }else{
-            game_finished_text.setText(rounds+" You Can Do Better!");
+            game_finished_text.setText(rounds + " " + you_can_better);
             if(SettingsActivity.audioFlag)
                 try_again_sound.start();
         }

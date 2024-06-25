@@ -131,17 +131,42 @@
                 android:text="Off"></TextView>
         </LinearLayout>
     </LinearLayout>
-    <Button
-        android:id="@+id/button_save"
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textSize="18sp"
-        android:text="Save"
-        app:cornerRadius = "30dp"
-        android:layout_marginBottom="50dp">
-    </Button>
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="50dp"
+            android:text="Save"
+            android:textSize="18sp"
+            app:cornerRadius="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="10dp">
+        </Button>
+
+        <Button
+            android:id="@+id/log_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="50dp"
+            android:text="Logout"
+            android:textSize="18sp"
+            app:cornerRadius="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+        </Button>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

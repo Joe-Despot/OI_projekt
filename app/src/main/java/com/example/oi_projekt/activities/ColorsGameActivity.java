@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import com.example.oi_projekt.animation.MyBounce;
 
@@ -62,7 +63,11 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
     private MediaPlayer try_again_sound;
     private MediaPlayer wrong_sound;
     private MediaPlayer good_sound;
-    ConstraintLayout parentView;
+    LinearLayout parentView;
+    CountDownTimer timer_back;
+    CountDownTimer timer_start;
+    private String you_can_better, well_done, congrats;
+
     private Integer rounds = 0;
     Map<String, String> colorsHexMapEn  = new HashMap<String, String>() {{
         put("Red", "#cc3300");
@@ -98,23 +103,31 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
         switch (lang) {
             case "en":
                 color_string = "COLOR";
+                you_can_better = "You can do better!";
+                congrats = "Congrats!";
+                well_done = "Well done!";
                 break;
             case "hr":
                 color_string = "BOJA";
+                you_can_better = "Možeš bolje!";
+                congrats = "Odlično!";
+                well_done = "Vrlo dobro!";
                 break;
             default:
                 color_string = "COLOR";
+                you_can_better = "You can do better!";
+                congrats = "Congrats!";
+                well_done = "Well done!";
                 break;
         }
         win_sound = MediaPlayer.create(this,R.raw.win_sound);
         wrong_sound = MediaPlayer.create(this,R.raw.wrong);
         try_again_sound = MediaPlayer.create(this,R.raw.try_again);
         good_sound = MediaPlayer.create(this,R.raw.good_sound);
-
-        parentView=findViewById(R.id.parentViewColorsGame);
-
+        
         color_text= findViewById(R.id.color_text);
         ballImageView = findViewById(R.id.ballImageView);
+
         button_start = findViewById(R.id.start_button);
         timer_text = findViewById(R.id.timer_text);
         rounds_text = findViewById(R.id.rounds_text);
@@ -157,14 +170,15 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
                 myAnim.setInterpolator(interpolator);
                 back_button.startAnimation(myAnim);
                 RemoveItems();
-                new CountDownTimer(1000, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                    }
-                    @Override
+                timer_back = new CountDownTimer(1000, 1000) {
+                    public void onTick(long millisUntilFinished) {}
+
                     public void onFinish() {
+                        if(timer_start!=null)
+                            timer_start.cancel();
                         finish();
                     }
+
                 }.start();
             }
         });
@@ -174,10 +188,12 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
             public void onClick(View v) {
                 game_started_flag= true;
                 randomizeColors();
-                new CountDownTimer(20000, 1000) {
+                button_start.setEnabled(false);
+
+                timer_start = new CountDownTimer(30000, 1000) {
                     public void onTick(long millisUntilFinished) {
                         NumberFormat f = new DecimalFormat("00");
-                        long sec = (millisUntilFinished / 1000) % 20;
+                        long sec = (millisUntilFinished / 1000) % 60;
                         timer_text.setText(f.format(sec) + "s");
                     }
                     public void onFinish() {
@@ -323,7 +339,6 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
                         if(choosingColor.equalsIgnoreCase(colorSectionsMap.get("bottomLeft"))){
                             randomizeColors();
                             rounds_text.setText((++rounds).toString());
-
                             if(SettingsActivity.audioFlag)
                                 good_sound.start();
 
@@ -337,7 +352,6 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
                         if(choosingColor.equalsIgnoreCase(colorSectionsMap.get("bottomRight"))){
                             randomizeColors();
                             rounds_text.setText((++rounds).toString());
-                            parentView.setBackgroundResource(R.drawable.purple_good_screen);
                             if(SettingsActivity.audioFlag)
                                 good_sound.start();}
                         else{
@@ -349,7 +363,6 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
                         if(choosingColor.equalsIgnoreCase(colorSectionsMap.get("topLeft"))){
                             randomizeColors();
                             rounds_text.setText((++rounds).toString());
-                            parentView.setBackgroundResource(R.drawable.purple_good_screen);
                             if(SettingsActivity.audioFlag)
                                 good_sound.start();
                         }
@@ -362,7 +375,6 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
                         if(choosingColor.equalsIgnoreCase(colorSectionsMap.get("topRight"))){
                             randomizeColors();
                             rounds_text.setText((++rounds).toString());
-                            parentView.setBackgroundResource(R.drawable.purple_good_screen);
                             if(SettingsActivity.audioFlag)
                                 good_sound.start();
                         }
@@ -417,17 +429,21 @@ public class ColorsGameActivity extends AppCompatActivity implements SensorEvent
         game_finished_text.setVisibility(View.VISIBLE);
 
         if(rounds>=7){
-            game_finished_text.setText(rounds+" Congrats!");
+            game_finished_text.setText(rounds + " " +  congrats);
             if(SettingsActivity.audioFlag)
                 win_sound.start();
         }else if(rounds<7 && rounds>3){
-            game_finished_text.setText(rounds+" Well Done!");
+            game_finished_text.setText(rounds + " " + well_done);
             if(SettingsActivity.audioFlag)
                 win_sound.start();
         }else{
-            game_finished_text.setText(rounds+" You Can Do Better!");
+            game_finished_text.setText(rounds + " " + you_can_better);
             if(SettingsActivity.audioFlag)
                 try_again_sound.start();
         }
+    }
+
+    private void goodJobBorder(){
+        parentView.setBackground(ContextCompat.getDrawable(this, R.drawable.win_border));
     }
 }

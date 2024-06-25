@@ -49,14 +49,16 @@ public class SettingsActivity extends AppCompatActivity {
     private TextView saveText;
     private EditText name;
     private Button button_save;
+    private Button log_out;
     private String settings_string;
     private String name_string;
     private String language_string;
+    private String choose_language_string;
     private String audio_string;
     private String audioon_string;
     private String audiooff_string;
     private String save_string;
-
+    private String log_out_string,user_string;
 
     private String[] languages = {"English", "Hrvatski"};
     @Override
@@ -80,6 +82,9 @@ public class SettingsActivity extends AppCompatActivity {
                 audioon_string = "On";
                 audiooff_string = "Off";
                 save_string = "Save";
+                log_out_string = "Logout";
+                user_string = "Name";
+                choose_language_string = "Choose Language";
                 break;
             case "hr":
                 settings_string = "Postavke";
@@ -89,8 +94,13 @@ public class SettingsActivity extends AppCompatActivity {
                 audioon_string = "Da";
                 audiooff_string = "Ne";
                 save_string = "Spremi";
+                log_out_string = "Odjava";
+                choose_language_string = "Odaberi Jezik";
+                user_string = "Ime";
                 break;
             default:
+                choose_language_string = "Choose Language";
+                log_out_string = "Logout";
                 settings_string = "Settings";
                 name_string = "Name";
                 language_string = "Language";
@@ -98,11 +108,13 @@ public class SettingsActivity extends AppCompatActivity {
                 audioon_string = "On";
                 audiooff_string = "Off";
                 save_string = "Save";
+                user_string = "Name";
                 break;
         }
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.dropdown_item, languages);
         AutoCompleteTextView autocompleteTV = findViewById(R.id.autoCompleteTextView);
+        autocompleteTV.setText(choose_language_string);
         autocompleteTV.setAdapter(arrayAdapter);
 
         audioSwitch = (Switch)findViewById(R.id.toggleButton);
@@ -110,7 +122,9 @@ public class SettingsActivity extends AppCompatActivity {
         back_button = findViewById(R.id.back_button_settings);
         name = findViewById(R.id.name);
         button_save = findViewById(R.id.button_save);
-
+        button_save.setText(save_string);
+        log_out = findViewById(R.id.log_out);
+        log_out.setText(log_out_string);
         nameText = findViewById(R.id.nameText);
         audioText = findViewById(R.id.audioText);
         languageText = findViewById(R.id.languageText);
@@ -132,9 +146,16 @@ public class SettingsActivity extends AppCompatActivity {
             textview.setText(audiooff_string);
         }
         SharedPreferences sharedPreferences_name =  getSharedPreferences("NameSettingsStore", MODE_PRIVATE);
-        String username = sharedPreferences_name.getString(LoginSignupPageActivity.current_email, "User");
+        String username = sharedPreferences_name.getString(LoginSignupPageActivity.current_email, user_string);
         name.setHint(username);
-
+        log_out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent resultIntent = new Intent(SettingsActivity.this, LoginSignupPageActivity.class);
+                finish();
+                startActivity(resultIntent);
+            }
+        });
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

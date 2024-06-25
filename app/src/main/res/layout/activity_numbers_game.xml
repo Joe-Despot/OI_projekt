@@ -45,7 +45,7 @@
     <TextView
         android:id="@+id/timer_text"
         android:textSize="18sp"
-        android:text="60s"
+        android:text="30s"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

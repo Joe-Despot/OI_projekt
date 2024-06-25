@@ -69,6 +69,7 @@ public class DragTouchListener implements View.OnTouchListener {
                 if (isViewFullyWithinAnotherView(innerView, outerView1) && shapeName.equals(outerView1.getText()) && !outerViewFilled1) {
                     outerViewFilled1 = true;
                     ShapesGameActivity.rounds++;
+                    sga.playGood_sound();
                     Log.d("TAG", "11");
 
                     if (outerViewFilled1 && outerViewFilled2 && outerViewFilled3 && outerViewFilled4) {
@@ -81,6 +82,7 @@ public class DragTouchListener implements View.OnTouchListener {
                     outerViewFilled2 = true;
                     ShapesGameActivity.rounds++;
                     Log.d("TAG", "21");
+                    sga.playGood_sound();
 
                     if (outerViewFilled1 && outerViewFilled2 && outerViewFilled3 && outerViewFilled4) {
                         Log.d("TAG", "Condition 2: All views filled");
@@ -92,6 +94,7 @@ public class DragTouchListener implements View.OnTouchListener {
                     outerViewFilled3 = true;
                     ShapesGameActivity.rounds++;
                     Log.d("TAG", "31");
+                    sga.playGood_sound();
 
                     if (outerViewFilled1 && outerViewFilled2 && outerViewFilled3 && outerViewFilled4) {
                         Log.d("TAG", "Condition 3: All views filled");
@@ -103,6 +106,7 @@ public class DragTouchListener implements View.OnTouchListener {
                     outerViewFilled4 = true;
                     ShapesGameActivity.rounds++;
                     Log.d("TAG", "41");
+                    sga.playGood_sound();
 
                     if (outerViewFilled1 && outerViewFilled2 && outerViewFilled3 && outerViewFilled4) {
                         Log.d("TAG", "Condition 4: All views filled");
